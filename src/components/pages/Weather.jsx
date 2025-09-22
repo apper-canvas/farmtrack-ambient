@@ -54,12 +54,12 @@ const Weather = () => {
       </div>
 
       {/* Today's Weather - Featured */}
-      {todayWeather && (
+{todayWeather && (
         <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-blue-200">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900">Today's Weather</h2>
             <div className="text-sm text-gray-600 font-medium">
-              {new Date(todayWeather.date).toLocaleDateString('en-US', { 
+              {new Date(todayWeather.date_c).toLocaleDateString('en-US', { 
                 weekday: 'long', 
                 month: 'long', 
                 day: 'numeric',

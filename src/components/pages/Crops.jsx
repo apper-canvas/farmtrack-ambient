@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { cropService } from "@/services/api/cropService";
+import ApperIcon from "@/components/ApperIcon";
 import CropCard from "@/components/molecules/CropCard";
-import CropForm from "@/components/organisms/CropForm";
-import Card from "@/components/atoms/Card";
-import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
-import Select from "@/components/atoms/Select";
-import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import ApperIcon from "@/components/ApperIcon";
-import { cropService } from "@/services/api/cropService";
+import Loading from "@/components/ui/Loading";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import CropForm from "@/components/organisms/CropForm";
 
 const Crops = () => {
   const [crops, setCrops] = useState([]);
@@ -50,15 +50,15 @@ const Crops = () => {
     // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(crop =>
-        crop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        crop.variety?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        crop.fieldLocation?.toLowerCase().includes(searchTerm.toLowerCase())
+crop.name_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        crop.variety_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        crop.field_location_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by status
+// Filter by status
     if (statusFilter !== "all") {
-      filtered = filtered.filter(crop => crop.status === statusFilter);
+      filtered = filtered.filter(crop => crop.status_c === statusFilter);
     }
 
     setFilteredCrops(filtered);
@@ -175,25 +175,25 @@ const Crops = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="text-center bg-gradient-to-br from-green-50 to-green-100 border-green-200">
             <div className="text-2xl font-bold text-green-800">
-              {crops.filter(c => c.status === "planted").length}
+{crops.filter(c => c.status_c === "planted").length}
             </div>
             <div className="text-sm text-green-600 font-medium">Planted</div>
           </Card>
           <Card className="text-center bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
             <div className="text-2xl font-bold text-blue-800">
-              {crops.filter(c => c.status === "growing").length}
+              {crops.filter(c => c.status_c === "growing").length}
             </div>
             <div className="text-sm text-blue-600 font-medium">Growing</div>
           </Card>
           <Card className="text-center bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
             <div className="text-2xl font-bold text-yellow-800">
-              {crops.filter(c => c.status === "ready").length}
+              {crops.filter(c => c.status_c === "ready").length}
             </div>
             <div className="text-sm text-yellow-600 font-medium">Ready</div>
           </Card>
           <Card className="text-center bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200">
             <div className="text-2xl font-bold text-gray-800">
-              {crops.filter(c => c.status === "harvested").length}
+              {crops.filter(c => c.status_c === "harvested").length}
             </div>
             <div className="text-sm text-gray-600 font-medium">Harvested</div>
           </Card>

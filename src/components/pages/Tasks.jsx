@@ -51,26 +51,26 @@ const Tasks = () => {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(task =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.category?.toLowerCase().includes(searchTerm.toLowerCase())
+filtered = filtered.filter(task =>
+        task.title_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.description_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.category_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Filter by priority
     if (priorityFilter !== "all") {
-      filtered = filtered.filter(task => task.priority === priorityFilter);
+filtered = filtered.filter(task => task.priority_c === priorityFilter);
     }
 
     // Filter by status
-    if (statusFilter === "completed") {
-      filtered = filtered.filter(task => task.completed);
+if (statusFilter === "completed") {
+      filtered = filtered.filter(task => task.completed_c);
     } else if (statusFilter === "pending") {
-      filtered = filtered.filter(task => !task.completed);
+      filtered = filtered.filter(task => !task.completed_c);
     } else if (statusFilter === "overdue") {
       filtered = filtered.filter(task => 
-        !task.completed && new Date(task.dueDate) < new Date()
+        !task.completed_c && new Date(task.due_date_c) < new Date()
       );
     }
 
@@ -78,12 +78,12 @@ const Tasks = () => {
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "dueDate":
-          return new Date(a.dueDate) - new Date(b.dueDate);
+return new Date(a.due_date_c) - new Date(b.due_date_c);
         case "priority":
           const priorityOrder = { high: 3, medium: 2, low: 1 };
-          return priorityOrder[b.priority] - priorityOrder[a.priority];
+          return priorityOrder[b.priority_c] - priorityOrder[a.priority_c];
         case "title":
-          return a.title.localeCompare(b.title);
+          return a.title_c.localeCompare(b.title_c);
         default:
           return 0;
       }
@@ -103,10 +103,10 @@ const Tasks = () => {
   };
 
   const handleCompleteTask = async (taskId) => {
-    try {
+try {
       const task = tasks.find(t => t.Id === taskId);
       if (task) {
-        await taskService.update(taskId, { ...task, completed: !task.completed });
+        await taskService.update(taskId, { ...task, completed_c: !task.completed_c });
         toast.success(task.completed ? "Task marked incomplete" : "Task completed!");
         loadTasks();
       }
@@ -164,10 +164,10 @@ const Tasks = () => {
   if (error) return <Error message={error} onRetry={loadTasks} />;
 
   // Calculate stats
-  const completedTasks = tasks.filter(t => t.completed).length;
-  const pendingTasks = tasks.filter(t => !t.completed).length;
-  const overdueTasks = tasks.filter(t => !t.completed && new Date(t.dueDate) < new Date()).length;
-  const highPriorityTasks = tasks.filter(t => !t.completed && t.priority === "high").length;
+const completedTasks = tasks.filter(t => t.completed_c).length;
+  const pendingTasks = tasks.filter(t => !t.completed_c).length;
+  const overdueTasks = tasks.filter(t => !t.completed_c && new Date(t.due_date_c) < new Date()).length;
+  const highPriorityTasks = tasks.filter(t => !t.completed_c && t.priority_c === "high").length;
 
   return (
     <div className="space-y-6">

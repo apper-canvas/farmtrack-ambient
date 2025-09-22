@@ -52,31 +52,31 @@ const Finances = () => {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(financial =>
-        financial.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        financial.category?.toLowerCase().includes(searchTerm.toLowerCase())
+filtered = filtered.filter(financial =>
+        financial.description_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        financial.category_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Filter by type
-    if (typeFilter !== "all") {
-      filtered = filtered.filter(financial => financial.type === typeFilter);
+if (typeFilter !== "all") {
+      filtered = filtered.filter(financial => financial.type_c === typeFilter);
     }
 
     // Filter by category
     if (categoryFilter !== "all") {
-      filtered = filtered.filter(financial => financial.category === categoryFilter);
+      filtered = filtered.filter(financial => financial.category_c === categoryFilter);
     }
 
     // Sort financials
-    filtered.sort((a, b) => {
+filtered.sort((a, b) => {
       switch (sortBy) {
         case "date":
-          return new Date(b.date) - new Date(a.date);
+          return new Date(b.date_c) - new Date(a.date_c);
         case "amount":
-          return parseFloat(b.amount) - parseFloat(a.amount);
+          return parseFloat(b.amount_c) - parseFloat(a.amount_c);
         case "description":
-          return a.description.localeCompare(b.description);
+          return a.description_c.localeCompare(b.description_c);
         default:
           return 0;
       }
@@ -144,19 +144,19 @@ const Finances = () => {
   if (error) return <Error message={error} onRetry={loadFinancials} />;
 
   // Calculate stats
-  const totalIncome = financials
-    .filter(f => f.type === "income")
-    .reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+const totalIncome = financials
+    .filter(f => f.type_c === "income")
+    .reduce((sum, f) => sum + parseFloat(f.amount_c || 0), 0);
   
   const totalExpenses = financials
-    .filter(f => f.type === "expense")
-    .reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+    .filter(f => f.type_c === "expense")
+    .reduce((sum, f) => sum + parseFloat(f.amount_c || 0), 0);
 
   const netIncome = totalIncome - totalExpenses;
   const totalTransactions = financials.length;
 
   // Get all categories for filter
-  const allCategories = [...new Set(financials.map(f => f.category))].filter(Boolean);
+  const allCategories = [...new Set(financials.map(f => f.category_c))].filter(Boolean);
 
   return (
     <div className="space-y-6">
@@ -172,8 +172,8 @@ const Finances = () => {
         </div>
         <div className="flex items-center space-x-3">
           <Button
-            onClick={() => {
-              setEditingFinancial({ type: "expense" });
+onClick={() => {
+              setEditingFinancial({ type_c: "expense" });
               setShowForm(true);
             }}
             icon="TrendingDown"
@@ -182,8 +182,8 @@ const Finances = () => {
             Add Expense
           </Button>
           <Button
-            onClick={() => {
-              setEditingFinancial({ type: "income" });
+onClick={() => {
+              setEditingFinancial({ type_c: "income" });
               setShowForm(true);
             }}
             icon="TrendingUp"

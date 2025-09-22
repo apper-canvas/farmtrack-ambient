@@ -30,41 +30,41 @@ const WeatherCard = ({ weather, isToday = false }) => {
   };
 
   return (
-    <Card className={`text-center relative overflow-hidden ${isToday ? 'ring-2 ring-primary-500 ring-opacity-50' : ''}`}>
+<Card className={`text-center relative overflow-hidden ${isToday ? 'ring-2 ring-primary-500 ring-opacity-50' : ''}`}>
       <div className="relative z-10">
         <div className="text-sm font-medium text-gray-600 mb-2">
-          {new Date(weather.date).toLocaleDateString('en-US', { 
+          {new Date(weather.date_c).toLocaleDateString('en-US', { 
             weekday: 'short', 
             month: 'short', 
             day: 'numeric' 
           })}
         </div>
         
-        <div className={`mx-auto mb-3 h-16 w-16 rounded-full bg-gradient-to-br ${getBackgroundGradient(weather.condition)} flex items-center justify-center shadow-lg`}>
-          <ApperIcon name={getWeatherIcon(weather.condition)} className="h-8 w-8 text-white" />
+        <div className={`mx-auto mb-3 h-16 w-16 rounded-full bg-gradient-to-br ${getBackgroundGradient(weather.condition_c)} flex items-center justify-center shadow-lg`}>
+          <ApperIcon name={getWeatherIcon(weather.condition_c)} className="h-8 w-8 text-white" />
         </div>
         
         <div className="mb-2">
           <span className="text-2xl font-bold text-gray-900">
-            {weather.temperature.high}°
+            {typeof weather.temperature_c === 'string' ? JSON.parse(weather.temperature_c).high : weather.temperature_c}°
           </span>
-          <span className="text-lg text-gray-600 ml-1">
-            {weather.temperature.low}°
+<span className="text-lg text-gray-600 ml-1">
+            {typeof weather.temperature_c === 'string' ? JSON.parse(weather.temperature_c).low : weather.temperature_c}°
           </span>
         </div>
         
         <div className="text-sm text-gray-600 capitalize font-medium mb-3">
-          {weather.condition}
+          {weather.condition_c}
         </div>
         
         <div className="flex justify-between text-xs text-gray-500 pt-3 border-t border-gray-100">
           <div className="flex items-center space-x-1">
-            <ApperIcon name="Droplets" className="h-3 w-3" />
-            <span>{weather.humidity}%</span>
+<ApperIcon name="Droplets" className="h-3 w-3" />
+            <span>{weather.humidity_c}%</span>
           </div>
           <div className="flex items-center space-x-1">
             <ApperIcon name="CloudRain" className="h-3 w-3" />
-            <span>{weather.precipitation}%</span>
+            <span>{weather.precipitation_c}%</span>
           </div>
         </div>
       </div>

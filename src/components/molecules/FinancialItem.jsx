@@ -6,8 +6,8 @@ import ApperIcon from "@/components/ApperIcon";
 import { format } from "date-fns";
 
 const FinancialItem = ({ financial, onEdit, onDelete }) => {
-  const isIncome = financial.type === "income";
-  const amount = parseFloat(financial.amount || 0);
+  const isIncome = financial.type_c === "income";
+  const amount = parseFloat(financial.amount_c || 0);
 
   const getCategoryIcon = (category, type) => {
     if (type === "income") {
@@ -41,7 +41,7 @@ const FinancialItem = ({ financial, onEdit, onDelete }) => {
               : 'bg-gradient-to-br from-red-100 to-red-200'
           }`}>
             <ApperIcon 
-              name={getCategoryIcon(financial.category, financial.type)} 
+name={getCategoryIcon(financial.category_c, financial.type_c)} 
               className={`h-6 w-6 ${isIncome ? 'text-green-700' : 'text-red-700'}`} 
             />
           </div>
@@ -49,7 +49,7 @@ const FinancialItem = ({ financial, onEdit, onDelete }) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-semibold text-gray-900">
-                {financial.description}
+                {financial.description_c}
               </h3>
               <span className={`text-xl font-bold ${isIncome ? 'text-green-600' : 'text-red-600'}`}>
                 {isIncome ? '+' : '-'}${amount.toLocaleString('en-US', { 
@@ -60,16 +60,16 @@ const FinancialItem = ({ financial, onEdit, onDelete }) => {
             </div>
             
             <div className="flex items-center space-x-4 text-sm">
-              <div className="flex items-center space-x-1 text-gray-500">
+<div className="flex items-center space-x-1 text-gray-500">
                 <ApperIcon name="Calendar" className="h-4 w-4" />
-                <span>{format(new Date(financial.date), "MMM dd, yyyy")}</span>
+                <span>{format(new Date(financial.date_c), "MMM dd, yyyy")}</span>
               </div>
               
               <Badge 
                 variant={isIncome ? "success" : "danger"} 
                 size="sm"
               >
-                {financial.category}
+                {financial.category_c}
               </Badge>
               
               <Badge variant="outline" size="sm">

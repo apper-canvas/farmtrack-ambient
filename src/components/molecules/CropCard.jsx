@@ -29,7 +29,7 @@ const CropCard = ({ crop, onEdit, onDelete }) => {
     return iconMap[cropName?.toLowerCase()] || "Sprout";
   };
 
-  const daysUntilHarvest = differenceInDays(new Date(crop.expectedHarvest), new Date());
+const daysUntilHarvest = differenceInDays(new Date(crop.expected_harvest_c), new Date());
   const isReadyForHarvest = daysUntilHarvest <= 0;
 
   return (
@@ -37,18 +37,18 @@ const CropCard = ({ crop, onEdit, onDelete }) => {
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center shadow-md">
-            <ApperIcon name={getCropIcon(crop.name)} className="h-6 w-6 text-green-700" />
+            <ApperIcon name={getCropIcon(crop.name_c)} className="h-6 w-6 text-green-700" />
           </div>
           <div>
-            <h3 className="font-bold text-lg text-gray-900">{crop.name}</h3>
-            {crop.variety && (
-              <p className="text-sm text-gray-600">{crop.variety}</p>
+            <h3 className="font-bold text-lg text-gray-900">{crop.name_c}</h3>
+            {crop.variety_c && (
+              <p className="text-sm text-gray-600">{crop.variety_c}</p>
             )}
           </div>
         </div>
         
-        <Badge variant={getStatusVariant(crop.status)} size="sm">
-          {crop.status}
+        <Badge variant={getStatusVariant(crop.status_c)} size="sm">
+          {crop.status_c}
         </Badge>
       </div>
       
@@ -58,7 +58,7 @@ const CropCard = ({ crop, onEdit, onDelete }) => {
             <ApperIcon name="MapPin" className="h-4 w-4" />
             <span>Field Location</span>
           </span>
-          <span className="font-medium text-gray-900">{crop.fieldLocation}</span>
+          <span className="font-medium text-gray-900">{crop.field_location_c}</span>
         </div>
         
         <div className="flex items-center justify-between text-sm">
@@ -66,7 +66,7 @@ const CropCard = ({ crop, onEdit, onDelete }) => {
             <ApperIcon name="Package" className="h-4 w-4" />
             <span>Quantity</span>
           </span>
-          <span className="font-medium text-gray-900">{crop.quantity} acres</span>
+<span className="font-medium text-gray-900">{crop.quantity_c} acres</span>
         </div>
         
         <div className="flex items-center justify-between text-sm">
@@ -75,7 +75,7 @@ const CropCard = ({ crop, onEdit, onDelete }) => {
             <span>Planted</span>
           </span>
           <span className="font-medium text-gray-900">
-            {format(new Date(crop.plantingDate), "MMM dd, yyyy")}
+            {format(new Date(crop.planting_date_c), "MMM dd, yyyy")}
           </span>
         </div>
         
@@ -85,7 +85,7 @@ const CropCard = ({ crop, onEdit, onDelete }) => {
             <span>Expected Harvest</span>
           </span>
           <span className={`font-medium ${isReadyForHarvest ? 'text-yellow-600' : 'text-gray-900'}`}>
-            {format(new Date(crop.expectedHarvest), "MMM dd, yyyy")}
+            {format(new Date(crop.expected_harvest_c), "MMM dd, yyyy")}
           </span>
         </div>
         
@@ -104,9 +104,9 @@ const CropCard = ({ crop, onEdit, onDelete }) => {
         )}
       </div>
       
-      {crop.notes && (
+{crop.notes_c && (
         <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-700 leading-relaxed">{crop.notes}</p>
+          <p className="text-sm text-gray-700 leading-relaxed">{crop.notes_c}</p>
         </div>
       )}
       

@@ -54,7 +54,7 @@ const Dashboard = () => {
     try {
       const task = data.tasks.find(t => t.Id === taskId);
       if (task) {
-        await taskService.update(taskId, { ...task, completed: !task.completed });
+await taskService.update(taskId, { ...task, completed_c: !task.completed_c });
         toast.success(task.completed ? "Task marked incomplete" : "Task completed!");
         loadDashboardData();
       }
@@ -67,26 +67,26 @@ const Dashboard = () => {
   if (error) return <Error message={error} onRetry={loadDashboardData} />;
 
   // Calculate statistics
-  const activeCrops = data.crops.filter(crop => crop.status !== "harvested").length;
-  const pendingTasks = data.tasks.filter(task => !task.completed).length;
+const activeCrops = data.crops.filter(crop => crop.status_c !== "harvested").length;
+  const pendingTasks = data.tasks.filter(task => !task.completed_c).length;
   const overdueTasks = data.tasks.filter(task => 
-    !task.completed && new Date(task.dueDate) < new Date()
+    !task.completed_c && new Date(task.due_date_c) < new Date()
   ).length;
   
-  const totalIncome = data.financials
-    .filter(f => f.type === "income")
-    .reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+const totalIncome = data.financials
+    .filter(f => f.type_c === "income")
+    .reduce((sum, f) => sum + parseFloat(f.amount_c || 0), 0);
   
   const totalExpenses = data.financials
-    .filter(f => f.type === "expense")
-    .reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+    .filter(f => f.type_c === "expense")
+    .reduce((sum, f) => sum + parseFloat(f.amount_c || 0), 0);
 
   const netIncome = totalIncome - totalExpenses;
 
   // Get upcoming tasks
-  const upcomingTasks = data.tasks
-    .filter(task => !task.completed)
-    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+const upcomingTasks = data.tasks
+    .filter(task => !task.completed_c)
+    .sort((a, b) => new Date(a.due_date_c) - new Date(b.due_date_c))
     .slice(0, 5);
 
   // Get today's weather

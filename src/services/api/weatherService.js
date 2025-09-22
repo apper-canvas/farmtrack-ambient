@@ -1,29 +1,92 @@
-import weatherData from "@/services/mockData/weather.json";
-
 class WeatherService {
   constructor() {
-    this.weather = [...weatherData];
+    const { ApperClient } = window.ApperSDK;
+    this.apperClient = new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
+    this.tableName = 'weather_c';
   }
 
   async getForecast() {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return [...this.weather];
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "temperature_c"}},
+          {"field": {"Name": "condition_c"}},
+          {"field": {"Name": "humidity_c"}},
+          {"field": {"Name": "precipitation_c"}}
+        ],
+        orderBy: [{"fieldName": "date_c", "sorttype": "ASC"}],
+        pagingInfo: {"limit": 7, "offset": 0}
+      };
+
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching weather forecast:", error?.response?.data?.message || error);
+      return [];
+    }
   }
 
   async getCurrentWeather() {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return { ...this.weather[0] };
+    try {
+      const forecast = await this.getForecast();
+      if (forecast.length > 0) {
+        return forecast[0];
+      }
+      return null;
+    } catch (error) {
+      console.error("Error fetching current weather:", error?.response?.data?.message || error);
+      return null;
+    }
   }
 
   async getWeatherByDate(date) {
-    await new Promise(resolve => setTimeout(resolve, 250));
-    const weather = this.weather.find(w => 
-      new Date(w.date).toDateString() === new Date(date).toDateString()
-    );
-    if (!weather) {
-      throw new Error("Weather data not found for this date");
+    try {
+      const targetDate = new Date(date).toISOString().split('T')[0];
+      
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "date_c"}},
+          {"field": {"Name": "temperature_c"}},
+          {"field": {"Name": "condition_c"}},
+          {"field": {"Name": "humidity_c"}},
+          {"field": {"Name": "precipitation_c"}}
+        ],
+        where: [
+          {"FieldName": "date_c", "Operator": "EqualTo", "Values": [targetDate]}
+        ],
+        pagingInfo: {"limit": 1, "offset": 0}
+      };
+
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return null;
+      }
+
+      if (response.data && response.data.length > 0) {
+        return response.data[0];
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error fetching weather by date:", error?.response?.data?.message || error);
+      return null;
     }
-    return { ...weather };
   }
 }
 

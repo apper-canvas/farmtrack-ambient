@@ -27,34 +27,34 @@ const TaskItem = ({ task, onComplete, onEdit, onDelete }) => {
     return iconMap[category?.toLowerCase()] || "CheckSquare";
   };
 
-  const isOverdue = new Date(task.dueDate) < new Date() && !task.completed;
+const isOverdue = new Date(task.due_date_c) < new Date() && !task.completed_c;
 
   return (
     <Card className={`transition-all duration-200 ${task.completed ? 'opacity-75 bg-gradient-to-r from-green-50 to-green-100' : ''} ${isOverdue ? 'ring-2 ring-red-200' : ''}`}>
       <div className="flex items-start justify-between">
         <div className="flex items-start space-x-4 flex-1">
-          <button
+<button
             onClick={() => onComplete(task.Id)}
             className={`mt-1 h-5 w-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
-              task.completed 
+              task.completed_c 
                 ? 'bg-gradient-to-r from-green-500 to-green-600 border-green-500' 
                 : 'border-gray-300 hover:border-primary-500'
             }`}
           >
-            {task.completed && <ApperIcon name="Check" className="h-3 w-3 text-white" />}
+            {task.completed_c && <ApperIcon name="Check" className="h-3 w-3 text-white" />}
           </button>
           
           <div className="flex-1 min-w-0">
             <div className="flex items-center space-x-2 mb-2">
-              <ApperIcon name={getCategoryIcon(task.category)} className="h-5 w-5 text-primary-600" />
-              <h3 className={`font-semibold text-gray-900 ${task.completed ? 'line-through' : ''}`}>
-                {task.title}
+              <ApperIcon name={getCategoryIcon(task.category_c)} className="h-5 w-5 text-primary-600" />
+              <h3 className={`font-semibold text-gray-900 ${task.completed_c ? 'line-through' : ''}`}>
+                {task.title_c}
               </h3>
             </div>
             
-            {task.description && (
+{task.description_c && (
               <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-                {task.description}
+                {task.description_c}
               </p>
             )}
             
@@ -62,15 +62,15 @@ const TaskItem = ({ task, onComplete, onEdit, onDelete }) => {
               <div className="flex items-center space-x-1 text-gray-500">
                 <ApperIcon name="Calendar" className="h-4 w-4" />
                 <span className={isOverdue ? 'text-red-600 font-medium' : ''}>
-                  {format(new Date(task.dueDate), "MMM dd, yyyy")}
+                  {format(new Date(task.due_date_c), "MMM dd, yyyy")}
                 </span>
               </div>
               
-              <Badge variant={getPriorityVariant(task.priority)} size="sm">
-                {task.priority} Priority
+              <Badge variant={getPriorityVariant(task.priority_c)} size="sm">
+                {task.priority_c} Priority
               </Badge>
               
-              {isOverdue && !task.completed && (
+{isOverdue && !task.completed_c && (
                 <Badge variant="danger" size="sm">
                   Overdue
                 </Badge>

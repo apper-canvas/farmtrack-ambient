@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
+import { AuthContext } from "../../App";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
+const location = useLocation();
+  const { logout } = useContext(AuthContext);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   const navigation = [
     { name: "Dashboard", path: "/", icon: "LayoutDashboard" },
@@ -18,6 +22,12 @@ const Header = () => {
   const isActivePath = (path) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
+  };
+
+  const handleLogout = async () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      await logout();
+    }
   };
 
   return (
@@ -54,6 +64,22 @@ const Header = () => {
               </Link>
             ))}
           </nav>
+{/* User Menu and Logout */}
+          <div className="hidden lg:flex items-center space-x-3">
+            {isAuthenticated && user && (
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <span>Welcome, {user.firstName || user.emailAddress}</span>
+              </div>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              icon="LogOut"
+            >
+              Logout
+            </Button>
+          </div>
 
           {/* Mobile menu button */}
           <Button
@@ -85,7 +111,18 @@ const Header = () => {
                 <ApperIcon name={item.icon} className="h-5 w-5" />
                 <span>{item.name}</span>
               </Link>
-            ))}
+))}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                icon="LogOut"
+                className="w-full"
+              >
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       )}
